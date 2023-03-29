@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+    # Disable Site Listing  
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Send Requests To Front Controller...
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [L,QSA]
+
+</IfModule>

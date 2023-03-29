@@ -1,0 +1,18 @@
+.input-groups {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.top-10 {
+    top: 10px;
+}
+
+.left-10 {
+    left: 10px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

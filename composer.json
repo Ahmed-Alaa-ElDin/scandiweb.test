@@ -1,0 +1,19 @@
+{
+    "name": "scandiweb/app",
+    "description": "Project for Scandiweb Junior vacancy",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ahmed Alaa",
+            "email": "ahmedalaaaldin100@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
