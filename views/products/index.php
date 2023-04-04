@@ -8,7 +8,7 @@
     <title>Product List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/views/styles.css">
 </head>
 
 <body>
@@ -21,7 +21,7 @@
             <!-- Buttons :: Start -->
             <div class="d-inline-flex justify-content-between align-items-center gap-2">
                 <!-- Add -->
-                <a href="./add-product.html" class="btn btn-primary fw-bold d-inline-flex align-items-center gap-1">
+                <a href="./add-product" class="btn btn-primary fw-bold d-inline-flex align-items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6h-2Z" />
                     </svg>
@@ -251,7 +251,7 @@
         integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="/views/scripts.js"></script>
 </body>
 
 </html>

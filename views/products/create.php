@@ -6,14 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Add</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <link rel="stylesheet" href="/views/styles.css">
 </head>
 
 <body>
     <div class="container py-3">
-        <form action="#" method="post" id="product_form">
+        <form action="/add-product" method="post" id="product_form">
 
             <!-- Header :: Start -->
             <header class="d-flex justify-content-between align-items-center">
@@ -25,17 +24,15 @@
                     <!-- Save -->
                     <button type="submit" class="btn btn-success fw-bold d-inline-flex align-items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="M21 7v12q0 .825-.588 1.413T19 21H5q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h12l4 4Zm-2 .85L16.15 5H5v14h14V7.85ZM12 18q1.25 0 2.125-.875T15 15q0-1.25-.875-2.125T12 12q-1.25 0-2.125.875T9 15q0 1.25.875 2.125T12 18Zm-6-8h9V6H6v4ZM5 7.85V19V5v2.85Z" />
+                            <path fill="currentColor" d="M21 7v12q0 .825-.588 1.413T19 21H5q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h12l4 4Zm-2 .85L16.15 5H5v14h14V7.85ZM12 18q1.25 0 2.125-.875T15 15q0-1.25-.875-2.125T12 12q-1.25 0-2.125.875T9 15q0 1.25.875 2.125T12 18Zm-6-8h9V6H6v4ZM5 7.85V19V5v2.85Z" />
                         </svg>
                         Save
                     </button>
 
                     <!-- Cancel -->
-                    <a id="" href="./index.html" class="btn btn-danger fw-bold d-inline-flex align-items-center gap-1">
+                    <a id="" href="./" class="btn btn-danger fw-bold d-inline-flex align-items-center gap-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
-                            <path fill="currentColor"
-                                d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L12 13.4Z" />
+                            <path fill="currentColor" d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L12 13.4Z" />
                         </svg>
                         Cancel
                     </a>
@@ -47,6 +44,13 @@
             <hr>
 
             <div class="d-flex flex-column gap-3">
+                <!-- Error Messages -->
+                <div id="errorsWrapper" class="d-none bg-danger-subtle p-3 rounded-2 shadow-sm">
+                    <ul id="errors" class="w-100 m-0">
+                        
+                    </ul>
+                </div>
+
                 <!-- SKU -->
                 <div class="row g-3 align-items-center has-validation">
                     <div class="col-2 col-md-1">
@@ -54,9 +58,7 @@
                     </div>
                     <div class="col-10 col-md-11 w-50">
                         <input type="text" class="col-auto form-control" name="sku" id="sku">
-                        <div class="text-danger text-center mt-2">
-                            Please Enter the SKU
-                        </div>
+
                     </div>
                 </div>
 
@@ -76,7 +78,7 @@
                         <label class="fw-bold col-form-label" for="name">Price</label>
                     </div>
                     <div class="col-10 col-md-11 input-group w-50">
-                        <span class="input-group-text" id="dolar">$</span>
+                        <span class="input-group-text" id="dollar">$</span>
                         <input type="text" class="form-control" name="price" id="price" aria-describedby="dolar">
                     </div>
                 </div>
@@ -98,8 +100,7 @@
 
                 <!-- DVD Section :: Start -->
                 <!-- Size -->
-                <div id="dvdBlock"
-                    class="d-none row gap-3 bg-primary-subtle border border-primary rounded py-3 px-2 mx-2">
+                <div id="dvdBlock" class="d-none row gap-3 bg-primary-subtle border border-primary rounded py-3 px-2 mx-2">
                     <div class="col-12 m-0">
                         <label class="fw-bold form-label" for="">Please, provide size</label>
                     </div>
@@ -118,8 +119,7 @@
                 <!-- DVD Section :: End -->
 
                 <!-- Furniture Section :: Start -->
-                <div id="furnitureBlock"
-                    class="d-none row gap-3 bg-success-subtle border border-success rounded py-3 px-2 mx-2">
+                <div id="furnitureBlock" class="d-none row gap-3 bg-success-subtle border border-success rounded py-3 px-2 mx-2">
                     <label class="fw-bold form-label" for="">Please, provide dimensions</label>
 
                     <!-- Height -->
@@ -162,8 +162,7 @@
 
                 <!-- Book Section :: Start -->
                 <!-- Weight -->
-                <div id="bookBlock"
-                    class="d-none row gap-3 bg-warning-subtle border border-warning rounded py-3 px-2 mx-2">
+                <div id="bookBlock" class="d-none row gap-3 bg-warning-subtle border border-warning rounded py-3 px-2 mx-2">
                     <label class="fw-bold form-label" for="">Please, provide weight</label>
 
                     <div class="row align-items-center">
@@ -190,11 +189,9 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="scripts.js"></script>
+    <script src="/views/scripts.js"></script>
 </body>
 
 </html>

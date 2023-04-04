@@ -1,19 +1,32 @@
 <?php
 
-require __DIR__ . "/../../vendor/autoload.php";
+namespace App\DB;
 
-use Dotenv\Dotenv;
+use PDO;
+use PDOException;
 
-$dotenv = Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->load();
+class DB
+{
+    private PDO $pdo;
 
-$dsn = "mysql:host=127.0.0.1;dbname:scandiweb-project";
-$user = "root";
-$pass = "Ahme@1234";
+    public function __construct(private array $config)
+    {
+        $defaultOptions = [
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ];
 
-var_dump($_ENV['DB_NAME']);
-try {
-    $pdo = new PDO($dsn,$user,$pass);
-} catch (PDOException $e) {
-    echo $e;
+        $dsn = "mysql:dbname=" . $config['dbName']  . ";host=" . $config['dbHost'];
+
+        try {
+            $this->pdo = new PDO($dsn, $config['dbUser'], $config['dbPassword'], $config['options'] ?? $defaultOptions);
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        return call_user_func_array([$this->pdo, $name], $arguments);
+    }
 }
