@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-10 col-md-11 input-group w-50">
                         <span class="input-group-text" id="dollar">$</span>
-                        <input type="text" class="form-control" name="price" id="price" aria-describedby="dolar">
+                        <input type="text" class="form-control" name="price" id="price" aria-describedby="dollar">
                     </div>
                 </div>
 
