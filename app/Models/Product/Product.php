@@ -5,16 +5,72 @@ declare(strict_types=1);
 namespace App\Models\Product;
 
 use App\App;
-use App\DB\DB;
+use App\Models\DVD\DVD;
+use App\Models\Book\Book;
 use App\Validators\Validator;
+use App\Models\Furniture\Furniture;
 
 abstract class Product
 {
     protected static array $errors = [];
-    
-    public function __construct() {
+
+    public function __construct(protected ?int $id = null, protected string $sku, protected string $name, protected int|float $price)
+    {
     }
-    
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getSku()
+    {
+        return $this->sku;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    abstract public function getDetailsName();
+    abstract public function getDetails();
+
+    public static function all(): array
+    {
+        // Get All Products separately 
+        $allBooks = Book::get();
+        $allDvds = DVD::get();
+        $allFurniture = Furniture::get();
+        
+        // Merge Different Products Types
+        $allProducts = array_merge($allBooks, $allDvds, $allFurniture);
+        
+        // Sort According to the ID
+        usort($allProducts, function ($a, $b) {
+            if ($a->id == $b->id) return 0;
+            return ($a->id < $b->id) ? -1 : 1;
+        });
+
+        return $allProducts;
+    }
+
+    public static function massDelete (array $products_id) {
+        $db = App::db();
+
+        // String of Question Marques equivalent to no. of IDs 
+        $qMarques = implode(',', array_fill(0, count($products_id), '?'));
+
+        $deleteStat = $db->prepare("DELETE FROM products WHERE id IN ($qMarques)");
+
+        return $deleteStat->execute($products_id);
+    }
+
     public static function validate(array $request)
     {
         // Validate SKU
@@ -62,6 +118,5 @@ abstract class Product
         } else {
             self::$errors['price'][] = 'Please enter the price for this product';
         }
-
     }
 }

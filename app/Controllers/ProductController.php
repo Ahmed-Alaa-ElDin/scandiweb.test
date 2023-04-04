@@ -2,31 +2,24 @@
 
 namespace App\Controllers;
 
-use App\App;
-use App\Models\Book\Book;
-use App\Models\DVD\DVD;
-use App\Models\Furniture\Furniture;
 use App\Views\View;
-use Exception;
+use App\Models\DVD\DVD;
+use App\Models\Book\Book;
+use App\Models\Product\Product;
+use App\Models\Furniture\Furniture;
 
 class ProductController
 {
     public function index(): string
     {
-        (new Book)->get();
+        $products = Product::all();
 
-        return View::make('products/index')->render();
+        return View::make('products/index', ["products" => $products])->render();
     }
 
     public function create()
     {
         return View::make('products/create')->render();
-    }
-
-    public function store()
-    {
-        (new Book)->create("asdas", "dasdsad", 13, 132);
-        return "Product Created";
     }
 
     public function validate()
@@ -49,9 +42,8 @@ class ProductController
                     }
 
                 case '2':
-                    $new_book = new Book;
-                    $errors = $new_book->validate($_POST);
-                    if (empty($errors) && $new_book->create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['weight'])) {
+                    $errors = Book::validate($_POST);
+                    if (empty($errors) && Book::create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['weight'])) {
                         return json_encode([
                             "status" => 'success',
                             "messages" => 'Product created successfully'
@@ -64,9 +56,8 @@ class ProductController
                     }
 
                 case '3':
-                    $new_furniture = new Furniture;
-                    $errors = $new_furniture->validate($_POST);
-                    if (empty($errors) && $new_furniture->create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['height'], $_POST['width'], $_POST['length'])) {
+                    $errors = Furniture::validate($_POST);
+                    if (empty($errors) && Furniture::create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['height'], $_POST['width'], $_POST['length'])) {
                         return json_encode([
                             "status" => 'success',
                             "messages" => 'Product created successfully'
@@ -91,6 +82,25 @@ class ProductController
                 "status" => 'failed',
                 "messages" => [
                     'productType' => ['Please Choose the Correct Type of the Product']
+                ]
+            ]);
+        }
+    }
+
+    public function massDelete()
+    {
+        if (!empty($_POST['selectedProducts']) && Product::massDelete($_POST['selectedProducts'])) {
+            return json_encode([
+                "status" => 'success',
+                "messages" => [
+                    'Products have been deleted'
+                ]
+            ]);
+        } else {
+            return json_encode([
+                "status" => 'failed',
+                "messages" => [
+                    'Products have not been deleted'
                 ]
             ]);
         }

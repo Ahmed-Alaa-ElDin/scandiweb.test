@@ -5,17 +5,46 @@ declare(strict_types=1);
 namespace App\Models\DVD;
 
 use App\App;
-use App\Models\Product\Product;
 use App\Validators\Validator;
+use App\Models\Product\Product;
 
 class DVD extends Product
 {
-    private int $size;
+    public function __construct(int $id = null, string $sku, string $name, int|float $price, private int $size)
+    {
+        parent::__construct($id, $sku, $name, $price);
+    }
+
+    public function getDetailsName()
+    {
+        return "Size";   
+    }
+
+    public function getDetails()
+    {
+        return $this->size. " MB";   
+    }
+
+
+    public static function get(): array
+    {
+        $productsStat = App::db()->prepare("SELECT * FROM dvds JOIN products ON dvds.product_id = products.id");
+
+        $productsStat->execute();
+
+        $allDvds = array_map(function ($dvd) {
+            $dvd = new DVD($dvd['id'], $dvd['sku'], $dvd['name'], (float)$dvd['price'], (int) $dvd['size']);
+
+            return $dvd;
+        }, $productsStat->fetchAll());
+
+        return $allDvds;
+    }
 
     public static function create(string $sku, string $name, float $price, float $size): bool
     {
         $db = App::db();
-        
+
         $db->beginTransaction();
 
         try {

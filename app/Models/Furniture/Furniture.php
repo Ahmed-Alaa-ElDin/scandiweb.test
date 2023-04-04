@@ -5,16 +5,51 @@ declare(strict_types=1);
 namespace App\Models\Furniture;
 
 use App\App;
-use App\Models\Product\Product;
 use App\Validators\Validator;
+use App\Models\Product\Product;
 
 class Furniture extends Product
 {
-    private int $height;
-    private int $width;
-    private int $length;
+    public function __construct(
+        int $id = null,
+        string $sku,
+        string $name,
+        int|float $price,
+        private int $height,
+        private int $width,
+        private int $length
+    ) {
+        parent::__construct($id, $sku, $name, $price);
+    }
 
-    public function create(string $sku, string $name, float $price, int $height, int $width, int $length): bool
+    public function getDetailsName()
+    {
+        return "Dimensions";   
+    }
+
+    public function getDetails()
+    {
+        return "$this->height x $this->width x $this->length";   
+    }
+
+
+    public static function get(): array
+    {
+        $productsStat = App::db()->prepare("SELECT * FROM furniture JOIN products ON furniture.product_id = products.id");
+
+        $productsStat->execute();
+
+        $allFurniture = array_map(function ($furniture) {
+            $furniture = new Furniture($furniture['id'], $furniture['sku'], $furniture['name'], (float)$furniture['price'], (int) $furniture['height'], (int) $furniture['width'], (int) $furniture['length']);
+
+            return $furniture;
+        }, $productsStat->fetchAll());
+
+        return $allFurniture;
+    }
+
+
+    public static function create(string $sku, string $name, float $price, int $height, int $width, int $length): bool
     {
         $db = App::db();
 

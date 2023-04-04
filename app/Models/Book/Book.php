@@ -5,21 +5,42 @@ declare(strict_types=1);
 namespace App\Models\Book;
 
 use App\App;
-use App\Models\Product\Product;
 use App\Validators\Validator;
+use App\Models\Product\Product;
 
 class Book extends Product
 {
+    public function __construct(int $id = null, string $sku, string $name, int|float $price, private int|float $weight)
+    {
+        parent::__construct($id, $sku, $name, $price);
+    }
+
+    public function getDetailsName()
+    {
+        return "Weight";   
+    }
+
+    public function getDetails()
+    {
+        return $this->weight . " KG";
+    }
+
     public static function get(): array
     {
         $productsStat = App::db()->prepare("SELECT * FROM books JOIN products ON books.product_id = products.id");
 
         $productsStat->execute();
 
-        return $productsStat->fetchAll();
+        $allBooks = array_map(function ($book) {
+            $book = new Book($book['id'], $book['sku'], $book['name'], (float)$book['price'], (float) $book['weight']);
+
+            return $book;
+        }, $productsStat->fetchAll());
+
+        return $allBooks;
     }
 
-    public function create(string $sku, string $name, float $price, float $weight): bool
+    public static function create(string $sku, string $name, float $price, float $weight): bool
     {
         $db = App::db();
 
