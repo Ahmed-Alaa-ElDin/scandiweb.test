@@ -11,25 +11,25 @@ $(function () {
       : massDeleteBtn.addClass("d-none");
   });
 
-  massDeleteBtn.on("click", function (e) {
-    let selectedProducts = [];
+  // massDeleteBtn.on("click", function (e) {
+  //   let selectedProducts = [];
 
-    $("input[type=checkbox][name='products_id']:checked").each(function () {
-      selectedProducts.push(this.value);
-    });
+  //   $("input[type=checkbox][name='products_id']:checked").each(function () {
+  //     selectedProducts.push(this.value);
+  //   });
 
-    $.ajax({
-      url: "/product-mass-delete",
-      method: "POST",
-      data: {"selectedProducts":selectedProducts},
-      success: function (response) {
-        let parsedResponse = JSON.parse(response);
-        if (parsedResponse.status == "success") {
-          window.location.replace("/");
-        }
-      }
-    });
-  });
+  //   $.ajax({
+  //     url: "/product-mass-delete",
+  //     method: "POST",
+  //     data: {"selectedProducts":selectedProducts},
+  //     success: function (response) {
+  //       let parsedResponse = JSON.parse(response);
+  //       if (parsedResponse.status == "success") {
+  //         window.location.replace("/");
+  //       }
+  //     }
+  //   });
+  // });
 
   // Create New Product
   var selectType = $("#productType");

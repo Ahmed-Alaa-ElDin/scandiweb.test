@@ -25,15 +25,15 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M11 19v-6H5v-2h6V5h2v6h6v2h-6v6h-2Z" />
                         </svg>
-                        Add
+                        ADD
                     </a>
 
                     <!-- Mass Delete -->
-                    <button id="delete-product-btn" class="btn btn-danger fw-bold d-inline-flex align-items-center gap-1 d-none">
+                    <button id="delete-product-btn" class="btn btn-danger fw-bold d-inline-flex align-items-center gap-1">
                         <svg class="" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256">
                             <path fill="currentColor" d="M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16ZM112 168a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0Zm48 0a8 8 0 0 1-16 0v-64a8 8 0 0 1 16 0Zm0-120H96v-8a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8Z" />
                         </svg>
-                        Mass Delete
+                        MASS DELETE
                     </button>
                 </div>
                 <!-- Buttons :: End -->
