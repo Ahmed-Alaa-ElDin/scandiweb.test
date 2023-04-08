@@ -11,25 +11,25 @@ $(function () {
       : massDeleteBtn.addClass("d-none");
   });
 
-  // massDeleteBtn.on("click", function (e) {
-  //   let selectedProducts = [];
+    massDeleteBtn.on("click", function (e) {
+      let selectedProducts = [];
 
-  //   $("input[type=checkbox][name='products_id']:checked").each(function () {
-  //     selectedProducts.push(this.value);
-  //   });
+      $("input[type=checkbox][name='products_id']:checked").each(function () {
+        selectedProducts.push(this.value);
+      });
 
-  //   $.ajax({
-  //     url: "/product-mass-delete",
-  //     method: "POST",
-  //     data: {"selectedProducts":selectedProducts},
-  //     success: function (response) {
-  //       let parsedResponse = JSON.parse(response);
-  //       if (parsedResponse.status == "success") {
-  //         window.location.replace("/");
-  //       }
-  //     }
-  //   });
-  // });
+      $.ajax({
+        url: "/product-mass-delete",
+        method: "POST",
+        data: {"selectedProducts":selectedProducts},
+        success: function (response) {
+          let parsedResponse = JSON.parse(response);
+          if (parsedResponse.status == "success") {
+            window.location.replace("/");
+          }
+        }
+      });
+    });
 
   // Create New Product
   var selectType = $("#productType");
@@ -40,17 +40,17 @@ $(function () {
   selectType.on("change", function (e) {
     let type = this.value;
     switch (type) {
-      case "1":
+      case "DVD":
         dvdBlock.removeClass("d-none");
         bookBlock.addClass("d-none");
         furnitureBlock.addClass("d-none");
         break;
-      case "2":
+      case "Book":
         dvdBlock.addClass("d-none");
         bookBlock.removeClass("d-none");
         furnitureBlock.addClass("d-none");
         break;
-      case "3":
+      case "Furniture":
         dvdBlock.addClass("d-none");
         bookBlock.addClass("d-none");
         furnitureBlock.removeClass("d-none");
@@ -67,18 +67,22 @@ $(function () {
   productForm.on("submit", function (e) {
     e.preventDefault();
 
-    let values = {};
-
-    $(this)
-      .find("input, select")
-      .each(function (i, inp) {
-        let fieldName = $(this).attr("name");
-
-        values[fieldName] = $(this).val();
-      });
+    let values = {
+      name: $("#name").val(),
+      sku: $("#sku").val(),
+      price: $("#price").val(),
+      type: $("#productType").val(),
+      arguments: {
+        size: $("#size").val(),
+        weight: $("#weight").val(),
+        width: $("#width").val(),
+        height: $("#height").val(),
+        length: $("#length").val()
+      }
+    };
 
     $.ajax({
-      url: "/product-validation",
+      url: "/product-store",
       method: "POST",
       data: values,
       beforeSend: function () {
@@ -91,7 +95,6 @@ $(function () {
           window.location.replace("/");
         } else {
           $("#errorsWrapper").removeClass("d-none");
-
           Object.entries(parsedResponse.messages).forEach(function ([
             field,
             messages

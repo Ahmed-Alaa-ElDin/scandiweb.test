@@ -6,9 +6,8 @@ use App\Controllers\ProductController;
 $router = new Router;
 
 $router->get('/', [ProductController::class, 'index'])
-    ->get('/add-product', [ProductController::class, 'create'])
-    ->post('/add-product', [ProductController::class, 'store']);
+    ->get('/add-product', [ProductController::class, 'create']);
 
 // APIs
-$router->post('/product-validation', [ProductController::class, 'validate'])
+$router->post('/product-store', [ProductController::class, 'store'])
     ->post('/product-mass-delete', [ProductController::class, 'massDelete']);

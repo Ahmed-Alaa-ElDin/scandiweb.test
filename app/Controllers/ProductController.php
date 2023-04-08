@@ -22,66 +22,41 @@ class ProductController
         return View::make('products/create')->render();
     }
 
-    public function validate()
+    public function store()
     {
-        if (isset($_POST['productType']) && in_array($_POST['productType'], [1, 2, 3])) {
+        $className = "App\\Models\\" . $_POST['type'] . "\\" . $_POST['type'];
 
-            switch ($_POST['productType']) {
-                case '1':
-                    $errors = DVD::validate($_POST);
-                    if (empty($errors) && DVD::create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['size'])) {
-                        return json_encode([
-                            "status" => 'success',
-                            "messages" => 'Product created successfully'
-                        ]);
-                    } else {
-                        return json_encode([
-                            "status" => 'failed',
-                            "messages" => $errors
-                        ]);
-                    }
+        if (!empty($_POST['type']) && class_exists($className)) {
 
-                case '2':
-                    $errors = Book::validate($_POST);
-                    if (empty($errors) && Book::create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['weight'])) {
-                        return json_encode([
-                            "status" => 'success',
-                            "messages" => 'Product created successfully'
-                        ]);
-                    } else {
-                        return json_encode([
-                            "status" => 'failed',
-                            "messages" => $errors
-                        ]);
-                    }
+            $errors = $className::validate($_POST);
 
-                case '3':
-                    $errors = Furniture::validate($_POST);
-                    if (empty($errors) && Furniture::create($_POST['sku'], $_POST['name'], $_POST['price'], $_POST['height'], $_POST['width'], $_POST['length'])) {
-                        return json_encode([
-                            "status" => 'success',
-                            "messages" => 'Product created successfully'
-                        ]);
-                    } else {
-                        return json_encode([
-                            "status" => 'failed',
-                            "messages" => $errors
-                        ]);
-                    }
+            if (empty($errors)) {
+                $product = new $className(
+                    null,
+                    $_POST['sku'],
+                    $_POST['name'],
+                    $_POST['price'],
+                    $_POST['arguments']
+                );
 
-                default:
-                    return json_encode([
-                        "status" => 'failed',
-                        "messages" => [
-                            'productType' => ['Please Choose the Correct Type of the Product']
-                        ]
-                    ]);
+                return $product->create() ? json_encode([
+                    "status" => 'success',
+                    "messages" => 'Product has been created successfully'
+                ]) : json_encode([
+                    "status" => 'failed',
+                    "messages" => "Product hasn't been created"
+                ]);
+            } else {
+                return json_encode([
+                    "status" => 'failed',
+                    "messages" => $errors
+                ]);
             }
         } else {
             return json_encode([
                 "status" => 'failed',
                 "messages" => [
-                    'productType' => ['Please Choose the Correct Type of the Product']
+                    'type' => ['Please Choose the Correct Type of the Product']
                 ]
             ]);
         }

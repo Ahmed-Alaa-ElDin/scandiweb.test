@@ -10,26 +10,27 @@ use App\Models\Product\Product;
 
 class Furniture extends Product
 {
-    public function __construct(
-        int $id = null,
-        string $sku,
-        string $name,
-        int|float $price,
-        private int $height,
-        private int $width,
-        private int $length
-    ) {
+    private int|float $height;
+    private int|float $width;
+    private int|float $length;
+
+    public function __construct(int $id = null, string $sku, string $name, int|float $price, private array $arguments)
+    {
         parent::__construct($id, $sku, $name, $price);
+
+        $this->height = (float) $arguments['height'];
+        $this->width = (float) $arguments['width'];
+        $this->length = (float) $arguments['length'];
     }
 
     public function getDetailsName()
     {
-        return "Dimensions";   
+        return "Dimensions";
     }
 
     public function getDetails()
     {
-        return "$this->height x $this->width x $this->length";   
+        return "{$this->height} x {$this->width} x {$this->length}";
     }
 
 
@@ -40,7 +41,7 @@ class Furniture extends Product
         $productsStat->execute();
 
         $allFurniture = array_map(function ($furniture) {
-            $furniture = new Furniture($furniture['id'], $furniture['sku'], $furniture['name'], (float)$furniture['price'], (int) $furniture['height'], (int) $furniture['width'], (int) $furniture['length']);
+            $furniture = new Furniture($furniture['id'], $furniture['sku'], $furniture['name'], (float)$furniture['price'], ["height" => (int) $furniture['height'], "width" => (int) $furniture['width'], "length" => (int) $furniture['length']]);
 
             return $furniture;
         }, $productsStat->fetchAll());
@@ -49,7 +50,7 @@ class Furniture extends Product
     }
 
 
-    public static function create(string $sku, string $name, float $price, int $height, int $width, int $length): bool
+    public function create(): bool
     {
         $db = App::db();
 
@@ -59,9 +60,9 @@ class Furniture extends Product
             $productStat = $db->prepare("INSERT INTO products (sku,name,price) VALUES (:sku,:name,:price)");
 
             $productStat->execute([
-                ":sku" => $sku,
-                ":name" => $name,
-                ":price" => $price
+                ":sku" => $this->sku,
+                ":name" => $this->name,
+                ":price" => $this->price
             ]);
 
             $productId = (int) $db->lastInsertId();
@@ -70,9 +71,9 @@ class Furniture extends Product
 
             $furnitureStat->execute([
                 ":product_id" => $productId,
-                "height" => $height,
-                "width" => $width,
-                "length" => $length
+                "height" => $this->height,
+                "width" => $this->width,
+                "length" => $this->length
             ]);
 
             $db->commit();
@@ -90,18 +91,18 @@ class Furniture extends Product
 
         // Validate Height
         // 1- Available
-        if (!empty($request['height'])) {
+        if (!empty($request['arguments']['height'])) {
             // 2- Int Size
-            if (!Validator::numeric($request['height'])) {
+            if (!Validator::numeric($request['arguments']['height'])) {
                 parent::$errors['height'][] = 'The height must be an integer';
             }
             // 3- Max Size
-            if (!Validator::max($request['height'], 4294967295)) {
+            if (!Validator::max($request['arguments']['height'], 4294967295)) {
                 parent::$errors['height'][] = 'The height must be less than 4294967295 CM';
             }
 
             // 4- Min Size
-            if (!Validator::min($request['height'], 0)) {
+            if (!Validator::min($request['arguments']['height'], 0)) {
                 parent::$errors['height'][] = 'The height must be greater than 0 CM';
             }
         } else {
@@ -110,18 +111,18 @@ class Furniture extends Product
 
         // Validate Width
         // 1- Available
-        if (!empty($request['width'])) {
+        if (!empty($request['arguments']['width'])) {
             // 2- Int Size
-            if (!Validator::numeric($request['width'])) {
+            if (!Validator::numeric($request['arguments']['width'])) {
                 parent::$errors['width'][] = 'The width must be an integer';
             }
             // 3- Max Size
-            if (!Validator::max($request['width'], 4294967295)) {
+            if (!Validator::max($request['arguments']['width'], 4294967295)) {
                 parent::$errors['width'][] = 'The width must be less than 4294967295 CM';
             }
 
             // 4- Min Size
-            if (!Validator::min($request['width'], 0)) {
+            if (!Validator::min($request['arguments']['width'], 0)) {
                 parent::$errors['width'][] = 'The width must be greater than 0 CM';
             }
         } else {
@@ -130,18 +131,18 @@ class Furniture extends Product
 
         // Validate Length
         // 1- Available
-        if (!empty($request['length'])) {
+        if (!empty($request['arguments']['length'])) {
             // 2- Int Size
-            if (!Validator::numeric($request['length'])) {
+            if (!Validator::numeric($request['arguments']['length'])) {
                 parent::$errors['length'][] = 'The length must be an integer';
             }
             // 3- Max Size
-            if (!Validator::max($request['length'], 4294967295)) {
+            if (!Validator::max($request['arguments']['length'], 4294967295)) {
                 parent::$errors['length'][] = 'The length must be less than 4294967295 CM';
             }
 
             // 4- Min Size
-            if (!Validator::min($request['length'], 0)) {
+            if (!Validator::min($request['arguments']['length'], 0)) {
                 parent::$errors['length'][] = 'The length must be greater than 0 CM';
             }
         } else {

@@ -91,9 +91,9 @@
                     <div class="col-10 col-md-11 w-50">
                         <select name="productType" class="form-control" id="productType">
                             <option value="">Choose the product's type</option>
-                            <option value="1">DVD</option>
-                            <option value="2">Book</option>
-                            <option value="3">Furniture</option>
+                            <option value="DVD">DVD</option>
+                            <option value="Book">Book</option>
+                            <option value="Furniture">Furniture</option>
                         </select>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                             <input type="text" class="form-control" name="length" id="length" aria-describedby="cm">
                             <span class="input-group-text" id="cm">CM</span>
                         </div>
-                    </div>
+                    </div>  
                 </div>
                 <!-- Furniture Section :: End -->
 
@@ -190,7 +190,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>    
     <script src="/views/assets/scripts.js"></script>
 </body>
 
